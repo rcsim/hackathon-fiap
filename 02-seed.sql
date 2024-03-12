@@ -1,3 +1,0 @@
-\c reserva_db;
-
-
