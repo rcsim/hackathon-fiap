@@ -1,6 +1,7 @@
 package com.postech30.hackathon.controller;
 
 import com.postech30.hackathon.dto.BookingDto;
+import com.postech30.hackathon.exceptions.BookingNotFoundException;
 import com.postech30.hackathon.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,9 @@ public class BookingController {
     public ResponseEntity<List<BookingDto>> getBooking(){
         var bookings = bookingService.getAll();
         return  ResponseEntity.ok().body(bookings);
-    }
+    }Config
     @GetMapping("/{id}")
-    public ResponseEntity<BookingDto> getBooking(@@PathVariable Long id){
+    public ResponseEntity<BookingDto> getBooking(@@PathVariable Long id) throws BookingNotFoundException {
         BookingDto booking = bookingService.getBookingById(id);
         return  ResponseEntity.ok().body(booking);
     }

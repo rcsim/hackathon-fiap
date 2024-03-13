@@ -1,16 +1,18 @@
 package com.postech30.hackathon.service.impl;
 
-import ch.qos.logback.core.net.server.Client;
 import com.postech30.hackathon.dto.BookingDto;
 import com.postech30.hackathon.entity.Booking;
-import com.postech30.hackathon.exception.BookingNotFoundException;
+import com.postech30.hackathon.exceptions.BookingNotFoundException;
+import com.postech30.hackathon.exceptions.ResourceNotFoundException;
+import com.postech30.hackathon.mapper.BookingMapper;
 import com.postech30.hackathon.repository.BookingRepository;
+import com.postech30.hackathon.repository.ClientRepository;
 import com.postech30.hackathon.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -25,31 +27,44 @@ public class BookingServiceImpl implements BookingService {
     private ClientRepository clientRepository;
 
     @Override
-    public List<Booking> getAll()
+    public List<BookingDto> getAll()
     {
-        return bookingRepository.findAll();
+        List<BookingDto> bookingDtos = bookingRepository.findAll().stream()
+                .map(BookingMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Booking getBookingById(Long id) throws BookingNotFoundException {
-        return bookingRepository.findById(id)
-                .orElseThrow(() -> new BookingNotFoundException("Reserva não encontrada"));
+    public BookingDto getBookingById(Long id) throws BookingNotFoundException {
+        return BookingMapper.toDto(bookingRepository.findById(id)
+                .orElseThrow(() -> new BookingNotFoundException("Reserva não encontrada")));
     }
 
 
     @Override
-    public Booking book(BookingDto bookingDto) {
-        var client =clientRepository.findById(bookingDto.getIdCustumer()).orElseThrow(() -> new  ResourceNotFoundException("Cliente não cadastrado"));
+    public BookingDto book(BookingDto bookingDto) {
+       var booking =  toEntity(bookingDto);
+        return null;
+    }
+
+    @Override
+    public BookingDto updateBooking(BookingDto bookingDto) {
+
+        return null;
+    }
+
+    private Booking toEntity(BookingDto bookingDto){
+        var client =clientRepository.findById(bookingDto.getIdCustumer()).orElseThrow(() -> new ResourceNotFoundException("Cliente não cadastrado"));
         var rooms = roomRepository.findAllById(bookingDto.getRooms());
         var service = serviceRepository.findAllById(bookingDto.getServices());
-        return null;
+        Booking booking = new Booking();
+        booking.setClient(client);
+        booking.setServices(service);
+        booking.setRooms(rooms);
+        booking.setGuests(bookingDto.getGuests());
+        booking.setCheckInDate(bookingDto.getCheckInDate());
+        booking.setCheckOutDate(bookingDto.getCheckOutDate());
+
+        return booking;
     }
-
-    @Override
-    public Booking updateBooking(BookingDto bookingDto) {
-
-        return null;
-    }
-
-    private toENtity
 }

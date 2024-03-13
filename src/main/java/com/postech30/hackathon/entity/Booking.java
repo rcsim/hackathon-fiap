@@ -21,8 +21,8 @@ public class Booking {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="id_custumer")
-    private Custumer idCustumer;
+    @JoinColumn(name="id_client")
+    private Client Client;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
