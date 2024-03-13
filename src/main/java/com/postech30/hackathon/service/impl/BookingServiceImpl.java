@@ -29,7 +29,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<BookingDto> getAll()
     {
-        List<BookingDto> bookingDtos = bookingRepository.findAll().stream()
+        return  bookingRepository.findAll().stream()
                 .map(BookingMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -44,13 +44,24 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingDto book(BookingDto bookingDto) {
        var booking =  toEntity(bookingDto);
+        /**
+         * Fazer regras de acordo com documentacao.
+         */
         return null;
     }
 
     @Override
-    public BookingDto updateBooking(BookingDto bookingDto) {
+    public BookingDto updateBooking(Long id, BookingDto bookingDto) throws BookingNotFoundException {
+        if(!bookingRepository.existsById(id))
+            throw new BookingNotFoundException("Reserva não encontrada");
+        var booking =  toEntity(bookingDto);
 
-        return null;
+        return BookingMapper.toDto(bookingRepository.save(booking));
+    }
+
+    @Override
+    public void delete(Long id) {
+        bookingRepository.deleteById(id);
     }
 
     private Booking toEntity(BookingDto bookingDto){

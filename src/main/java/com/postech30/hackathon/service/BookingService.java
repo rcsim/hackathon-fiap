@@ -1,7 +1,6 @@
 package com.postech30.hackathon.service;
 
 import com.postech30.hackathon.dto.BookingDto;
-import com.postech30.hackathon.entity.Booking;
 import com.postech30.hackathon.exceptions.BookingNotFoundException;
 
 import java.util.List;
@@ -13,5 +12,7 @@ public interface BookingService {
 
     BookingDto book(BookingDto bookingDto);
 
-    BookingDto updateBooking(BookingDto bookingDto);
+    BookingDto updateBooking(Long id, BookingDto bookingDto) throws BookingNotFoundException;
+
+    void delete(Long id);
 }
