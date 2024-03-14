@@ -1,62 +1,71 @@
 package com.postech30.hackathon.service.impl;
 
-import com.postech30.hackathon.dto.BookingDto;
+import com.postech30.hackathon.dto.AdditionalDTO;
+import com.postech30.hackathon.dto.BookingDTO;
+import com.postech30.hackathon.entity.Additional;
 import com.postech30.hackathon.entity.Booking;
 import com.postech30.hackathon.exceptions.BookingNotFoundException;
 import com.postech30.hackathon.exceptions.ResourceNotFoundException;
 import com.postech30.hackathon.mapper.BookingMapper;
+import com.postech30.hackathon.repository.AdditionalRepository;
 import com.postech30.hackathon.repository.BookingRepository;
 import com.postech30.hackathon.repository.ClientRepository;
 import com.postech30.hackathon.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+    //    @Autowired
+//    private RoomRepository roomRepository;
     @Autowired
-    private RoomRepository roomRepository;
-    @Autowired
-    private ServiceRepository serviceRepository;
+    private AdditionalRepository additionalRepository;
     @Autowired
     private ClientRepository clientRepository;
 
     @Override
-    public List<BookingDto> getAll()
-    {
-        return  bookingRepository.findAll().stream()
-                .map(BookingMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<BookingDTO> getAll(Pageable pageable) {
+        Page<Booking> page;
+        page = bookingRepository.findAll(pageable);
+
+        return page.map(BookingMapper::toDTO);
     }
 
     @Override
-    public BookingDto getBookingById(Long id) throws BookingNotFoundException {
-        return BookingMapper.toDto(bookingRepository.findById(id)
+    public BookingDTO getBookingById(Long id) throws BookingNotFoundException {
+        return BookingMapper.toDTO(bookingRepository.findById(id)
                 .orElseThrow(() -> new BookingNotFoundException("Reserva não encontrada")));
     }
 
 
     @Override
-    public BookingDto book(BookingDto bookingDto) {
-       var booking =  toEntity(bookingDto);
-        /**
-         * Fazer regras de acordo com documentacao.
-         */
-        return null;
+    public BookingDTO book(BookingDTO bookingDto) {
+        var booking = toEntity(bookingDto);
+        Booking savedBooking = bookingRepository.save(booking);
+
+        List<Additional> additionalList = additionalRepository.findAllById(bookingDto.getServices());
+
+        savedBooking.setAdditional(additionalList);
+        savedBooking.setTotalValue(calculateTotalValue(savedBooking));
+        savedBooking = bookingRepository.save(savedBooking);
+
+        return BookingMapper.toDTO(savedBooking);
     }
 
     @Override
-    public BookingDto updateBooking(Long id, BookingDto bookingDto) throws BookingNotFoundException {
-        if(!bookingRepository.existsById(id))
-            throw new BookingNotFoundException("Reserva não encontrada");
-        var booking =  toEntity(bookingDto);
-
-        return BookingMapper.toDto(bookingRepository.save(booking));
+    public BookingDTO updateBooking(Long id, BookingDTO bookingDto) throws BookingNotFoundException {
+        Booking existingBooking = bookingRepository.findById(id)
+                .orElseThrow(() -> new BookingNotFoundException("Reserva não encontrada"));
+        var booking = updateDTO(existingBooking, bookingDto);
+        booking.setTotalValue(calculateTotalValue(booking));
+        return BookingMapper.toDTO( bookingRepository.save(booking));
     }
 
     @Override
@@ -64,18 +73,32 @@ public class BookingServiceImpl implements BookingService {
         bookingRepository.deleteById(id);
     }
 
-    private Booking toEntity(BookingDto bookingDto){
-        var client =clientRepository.findById(bookingDto.getIdCustumer()).orElseThrow(() -> new ResourceNotFoundException("Cliente não cadastrado"));
-        var rooms = roomRepository.findAllById(bookingDto.getRooms());
-        var service = serviceRepository.findAllById(bookingDto.getServices());
+    private Booking toEntity(BookingDTO bookingDto) {
+        var client = clientRepository.findById(bookingDto.getIdClient()).orElseThrow(() -> new ResourceNotFoundException("Cliente não cadastrado"));
+//        var rooms = roomRepository.findAllById(bookingDto.getRooms());
         Booking booking = new Booking();
         booking.setClient(client);
-        booking.setServices(service);
-        booking.setRooms(rooms);
+//        booking.setRooms(rooms);
         booking.setGuests(bookingDto.getGuests());
         booking.setCheckInDate(bookingDto.getCheckInDate());
         booking.setCheckOutDate(bookingDto.getCheckOutDate());
 
         return booking;
     }
+
+    private Booking updateDTO(Booking existingBooking, BookingDTO bookingDTO) {
+        List<Additional> additionalList = additionalRepository.findAllById(bookingDTO.getServices());
+        existingBooking.setAdditional(additionalList);
+        existingBooking.setGuests(bookingDTO.getGuests());
+        existingBooking.setCheckInDate(bookingDTO.getCheckInDate());
+        existingBooking.setCheckOutDate(bookingDTO.getCheckOutDate());
+        return existingBooking;
+    }
+
+    private double calculateTotalValue(Booking booking){
+        var additional = booking.getAdditional();
+
+        return additional.stream().mapToDouble(Additional::getPrice).sum();
+    }
+
 }

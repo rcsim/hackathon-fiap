@@ -1,6 +1,6 @@
 version: "3"
 services:
-  db:
+ db:
     image: postgres
     environment:
       - POSTGRES_USER=compose-postgres
@@ -9,8 +9,9 @@ services:
       - "5432:5432"
     networks:
       - my-networks
+   
 
-  app:
+ app:
     depends_on:
       - db
     build: .
@@ -25,5 +26,5 @@ services:
       - my-networks
 
 networks:
-  my-networks:
+ my-networks:
     driver: bridge

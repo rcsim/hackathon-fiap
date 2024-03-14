@@ -1,18 +1,18 @@
 package com.postech30.hackathon.service;
 
-import com.postech30.hackathon.dto.BookingDto;
+import com.postech30.hackathon.dto.BookingDTO;
 import com.postech30.hackathon.exceptions.BookingNotFoundException;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface BookingService {
-    List<BookingDto> getAll();
+    Page<BookingDTO> getAll(Pageable pageable);
 
-    BookingDto getBookingById(Long id) throws BookingNotFoundException;
+    BookingDTO getBookingById(Long id) throws BookingNotFoundException;
 
-    BookingDto book(BookingDto bookingDto);
+    BookingDTO book(BookingDTO bookingDto);
 
-    BookingDto updateBooking(Long id, BookingDto bookingDto) throws BookingNotFoundException;
+    BookingDTO updateBooking(Long id, BookingDTO bookingDto) throws BookingNotFoundException;
 
     void delete(Long id);
 }

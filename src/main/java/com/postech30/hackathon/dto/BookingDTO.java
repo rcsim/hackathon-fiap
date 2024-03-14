@@ -1,7 +1,6 @@
 package com.postech30.hackathon.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.postech30.hackathon.entity.Booking;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +14,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookingDto {
+public class BookingDTO {
 
     private Long id;
     @JsonProperty
     @NotNull(message = "idCliente é um campo obrigatorio ")
-    private Long idCustumer;
+    private Long idClient;
     @JsonProperty
     @NotNull(message = "data de checkin é um campo obrigatorio ")
     private LocalDate checkInDate;

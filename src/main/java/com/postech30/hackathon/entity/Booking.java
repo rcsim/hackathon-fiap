@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "tb_bookings")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,21 +22,21 @@ public class Booking {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="id_client")
+    @JoinColumn(name = "id_client")
     private Client Client;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
-    @ManyToMany
-    @JoinTable(name="rooms_booked", joinColumns=
-            {@JoinColumn(name="room_id")}, inverseJoinColumns=
-            {@JoinColumn(name="book_id")})
-    private List<Room> rooms;
-    @ManyToMany
-    @JoinTable(name="services_booked", joinColumns=
-            {@JoinColumn(name="service_id")}, inverseJoinColumns=
-            {@JoinColumn(name="book_id")})
-    private List<Service> services;
+    //    @ManyToMany
+//    @JoinTable(name="rooms_booked", joinColumns=
+//            {@JoinColumn(name="room_id")}, inverseJoinColumns=
+//            {@JoinColumn(name="book_id")})
+//    private List<Room> rooms;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @JoinTable(name = "services_booked",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id"))
+    private List<Additional> additional;
     private double totalValue;
     private int guests;
 }
