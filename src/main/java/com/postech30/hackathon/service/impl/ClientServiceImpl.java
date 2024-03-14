@@ -6,10 +6,10 @@ import com.postech30.hackathon.exceptions.ResourceNotFoundException;
 import com.postech30.hackathon.mapper.ClientMapper;
 import com.postech30.hackathon.repository.ClientRepository;
 import com.postech30.hackathon.service.ClientService;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
 

@@ -3,14 +3,13 @@ package com.postech30.hackathon.mock;
 import com.postech30.hackathon.dto.BookingDTO;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 public class BookingMock {
     public static BookingDTO getBookingMock() {
         // Criando os sets para rooms e services
-        List<Long> rooms = Arrays.asList(1L);
-        List<Long> services = Arrays.asList(1L);
+        List<Long> rooms = List.of(1L);
+        List<Long> services = List.of(1L);
 
         // Criando o objeto BookingDTO
         BookingDTO bookingDTO = new BookingDTO();

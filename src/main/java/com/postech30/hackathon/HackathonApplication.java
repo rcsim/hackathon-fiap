@@ -8,8 +8,8 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 @SpringBootApplication
 public class HackathonApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(HackathonApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(HackathonApplication.class, args);
+    }
 
 }

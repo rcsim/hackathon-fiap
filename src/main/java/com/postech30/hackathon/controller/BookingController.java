@@ -1,12 +1,10 @@
 package com.postech30.hackathon.controller;
 
 import com.postech30.hackathon.dto.BookingDTO;
-import com.postech30.hackathon.entity.Booking;
 import com.postech30.hackathon.exceptions.BookingNotFoundException;
 import com.postech30.hackathon.service.BookingService;
 import com.postech30.hackathon.service.impl.EmailServiceImpl;
 import jakarta.mail.MessagingException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,21 +15,27 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/book")
 public class BookingController {
 
-    @Autowired
-    private BookingService bookingService;
+    private final BookingService bookingService;
 
-    @Autowired
-    private EmailServiceImpl emailService;
-    @GetMapping
-    public ResponseEntity<Page<BookingDTO>> getBooking( Pageable pageable)  {
-        Page<BookingDTO> bookings = bookingService.getAll(pageable);
-        return  ResponseEntity.ok().body(bookings);
+    private final EmailServiceImpl emailService;
+
+    public BookingController(BookingService bookingService, EmailServiceImpl emailService) {
+        this.bookingService = bookingService;
+        this.emailService = emailService;
     }
-    @GetMapping(value="{id}")
+
+    @GetMapping
+    public ResponseEntity<Page<BookingDTO>> getBooking(Pageable pageable) {
+        Page<BookingDTO> bookings = bookingService.getAll(pageable);
+        return ResponseEntity.ok().body(bookings);
+    }
+
+    @GetMapping(value = "{id}")
     public ResponseEntity<BookingDTO> getBooking(@PathVariable Long id) throws BookingNotFoundException {
         BookingDTO booking = bookingService.getBookingById(id);
-        return  ResponseEntity.ok().body(booking);
+        return ResponseEntity.ok().body(booking);
     }
+
     @PostMapping()
     public ResponseEntity<BookingDTO> book(@RequestBody BookingDTO bookingDto) throws MessagingException {
         BookingDTO booking = bookingService.book(bookingDto);
@@ -39,14 +43,14 @@ public class BookingController {
 
     }
 
-    @PutMapping(value="{id}")
+    @PutMapping(value = "{id}")
     public ResponseEntity<BookingDTO> updateBooking(@PathVariable Long id, @RequestBody BookingDTO bookingDto) throws BookingNotFoundException {
-        BookingDTO booking = bookingService.updateBooking(id,bookingDto);
-        return  ResponseEntity.ok().body(booking);
+        BookingDTO booking = bookingService.updateBooking(id, bookingDto);
+        return ResponseEntity.ok().body(booking);
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity deleteBooking(@PathVariable Long id){
+    public ResponseEntity deleteBooking(@PathVariable Long id) {
         bookingService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Reserva deletada com sucesso");
     }

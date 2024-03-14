@@ -24,7 +24,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> addClient(@RequestBody @Valid ClientDTO clientDTO){
+    public ResponseEntity<ClientDTO> addClient(@RequestBody @Valid ClientDTO clientDTO) {
         var clientSave = clientService.createClient(clientDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(clientSave);
     }

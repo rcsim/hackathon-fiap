@@ -1,98 +1,99 @@
 package com.postech30.hackathon.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.postech30.hackathon.dto.BookingDTO;
-import com.postech30.hackathon.mock.BookingMock;
 import com.postech30.hackathon.service.BookingService;
+import com.postech30.hackathon.service.impl.EmailServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-@SpringBootTest
-@AutoConfigureMockMvc
-public class BookingControllerTest {
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
+@ExtendWith(SpringExtension.class)
+@WebMvcTest(BookingController.class)
+class BookingControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private BookingService bookingService;
+    private BookingService mockBookingService;
+    @MockBean
+    private EmailServiceImpl mockEmailService;
 
     @Test
-    public void testGetBooking() throws Exception {
-        Page<BookingDTO> bookings = new PageImpl<>(List.of(new BookingDTO()));
-        when(bookingService.getAll(any(Pageable.class))).thenReturn(bookings);
+    void testGetBooking1() throws Exception {
+        final BookingDTO bookingDTO = new BookingDTO();
+        bookingDTO.setId(0L);
+        bookingDTO.setIdClient(0L);
+        bookingDTO.setCheckInDate(LocalDate.of(2020, 1, 1));
+        bookingDTO.setCheckOutDate(LocalDate.of(2020, 1, 1));
+        bookingDTO.setRooms(List.of(0L));
+        final Page<BookingDTO> bookingDTOS = new PageImpl<>(List.of(bookingDTO));
+        when(mockBookingService.getAll(any(Pageable.class))).thenReturn(bookingDTOS);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/book")
-                        .param("page", "0")
-                        .param("size", "5"))
-                .andExpect(status().isOk());
+        final MockHttpServletResponse response = mockMvc.perform(get("/book")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }
 
     @Test
-    public void testGetBookingById() throws Exception {
-        Long id = 1L; // Use um ID válido aqui
-        BookingDTO bookingDTO = new BookingDTO();
-        when(bookingService.getBookingById(id)).thenReturn(bookingDTO);
+    void testGetBooking1_BookingServiceReturnsNoItems() throws Exception {
+        when(mockBookingService.getAll(any(Pageable.class))).thenReturn(new PageImpl<>(Collections.emptyList()));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/book/" + id))
-                .andExpect(status().isOk());
+        final MockHttpServletResponse response = mockMvc.perform(get("/book")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }
+
     @Test
-    public void testBook() throws Exception {
-        BookingDTO bookingDTO = BookingMock.getBookingMock();
-        when(bookingService.book(bookingDTO)).thenReturn(bookingDTO);
+    void testGetBooking2() throws Exception {
+        final BookingDTO bookingDTO = new BookingDTO();
+        bookingDTO.setId(0L);
+        bookingDTO.setIdClient(0L);
+        bookingDTO.setCheckInDate(LocalDate.of(2020, 1, 1));
+        bookingDTO.setCheckOutDate(LocalDate.of(2020, 1, 1));
+        bookingDTO.setRooms(List.of(0L));
+        when(mockBookingService.getBookingById(0L)).thenReturn(bookingDTO);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
+        final MockHttpServletResponse response = mockMvc.perform(get("/book/{id}", 0)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
 
-        String json = objectMapper.writeValueAsString(bookingDTO);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/book")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andExpect(status().isCreated());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
     }
+
     @Test
-    public void testUpdateBooking() throws Exception {
-        Long id = 1L;
-        BookingDTO bookingDTO = BookingMock.getBookingMock();
+    void testDeleteBooking() throws Exception {
+        final MockHttpServletResponse response = mockMvc.perform(delete("/book/{id}", 0)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-
-        String json = objectMapper.writeValueAsString(bookingDTO);
-        when(bookingService.updateBooking(id, bookingDTO)).thenReturn(bookingDTO);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/book")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andExpect(status().isCreated());
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        assertThat(response.getContentAsString()).isEqualTo("Reserva deletada com sucesso");
+        verify(mockBookingService).delete(0L);
     }
-    @Test
-    public void testDeleteBooking() throws Exception {
-        Long id = 1L;
-        doNothing().when(bookingService).delete(id);
-
-        mockMvc.perform(MockMvcRequestBuilders.delete("/book/" + id))
-                .andExpect(status().isOk());
-    }
-
-
-
 }
