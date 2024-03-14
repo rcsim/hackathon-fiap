@@ -34,7 +34,7 @@ public class ClientController {
             @ApiResponse(responseCode = "422", description = "Parâmetro não pode ser nulo")
     })
     @PostMapping
-    public ResponseEntity<ClientDTO> addClient(@RequestBody @Valid ClientDTO clientDTO){
+    public ResponseEntity<ClientDTO> addClient(@RequestBody @Valid ClientDTO clientDTO) {
         var clientSave = clientService.createClient(clientDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(clientSave);
     }

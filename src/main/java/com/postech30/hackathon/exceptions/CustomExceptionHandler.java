@@ -42,6 +42,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("path", request.getRequestURI());
         return new ResponseEntity<>(body, status);
     }
+
     @ExceptionHandler(BookingNotFoundException.class)
     protected ResponseEntity<Object> BookingNotFound(BookingNotFoundException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
@@ -65,8 +66,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         body.put("path", request.getRequestURI());
         return new ResponseEntity<>(body, status);
     }
-
-
 
 
 }

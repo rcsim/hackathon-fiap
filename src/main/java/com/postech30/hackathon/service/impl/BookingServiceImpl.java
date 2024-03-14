@@ -1,6 +1,5 @@
 package com.postech30.hackathon.service.impl;
 
-import com.postech30.hackathon.dto.AdditionalDTO;
 import com.postech30.hackathon.dto.BookingDTO;
 import com.postech30.hackathon.entity.Additional;
 import com.postech30.hackathon.entity.Booking;
@@ -70,7 +69,7 @@ public class BookingServiceImpl implements BookingService {
                 .orElseThrow(() -> new BookingNotFoundException("Reserva não encontrada"));
         var booking = updateDTO(existingBooking, bookingDto);
         booking.setTotalValue(calculateTotalValue(booking));
-        return BookingMapper.toDTO( bookingRepository.save(booking));
+        return BookingMapper.toDTO(bookingRepository.save(booking));
     }
 
     @Override
@@ -100,7 +99,7 @@ public class BookingServiceImpl implements BookingService {
         return existingBooking;
     }
 
-    private double calculateTotalValue(Booking booking){
+    private double calculateTotalValue(Booking booking) {
         var additional = booking.getAdditional();
 
         return additional.stream().mapToDouble(Additional::getPrice).sum();

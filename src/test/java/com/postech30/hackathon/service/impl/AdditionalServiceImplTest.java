@@ -1,22 +1,8 @@
 package com.postech30.hackathon.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.postech30.hackathon.dto.AdditionalDTO;
 import com.postech30.hackathon.entity.Additional;
 import com.postech30.hackathon.repository.AdditionalRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -28,6 +14,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 @ContextConfiguration(classes = {AdditionalServiceImpl.class})
 @ExtendWith(SpringExtension.class)
@@ -51,10 +45,10 @@ class AdditionalServiceImplTest {
         additional.setName("Name");
         additional.setPrice(10.0d);
         additional.setType("Type");
-        when(additionalRepository.save(Mockito.<Additional>any())).thenReturn(additional);
+        when(additionalRepository.save(Mockito.any())).thenReturn(additional);
         AdditionalDTO additionalDTO = new AdditionalDTO();
         AdditionalDTO actualCreateServicesResult = additionalServiceImpl.createServices(additionalDTO);
-        verify(additionalRepository).save(Mockito.<Additional>any());
+        verify(additionalRepository).save(Mockito.any());
         assertEquals("Name", actualCreateServicesResult.getName());
         assertEquals("Serviço", additionalDTO.getType());
         assertEquals("The characteristics of someone or something", actualCreateServicesResult.getDescription());
@@ -69,9 +63,9 @@ class AdditionalServiceImplTest {
      */
     @Test
     void testCreateServices2() {
-        when(additionalRepository.save(Mockito.<Additional>any())).thenThrow(new RuntimeException("Serviço"));
+        when(additionalRepository.save(Mockito.any())).thenThrow(new RuntimeException("Serviço"));
         assertThrows(RuntimeException.class, () -> additionalServiceImpl.createServices(new AdditionalDTO()));
-        verify(additionalRepository).save(Mockito.<Additional>any());
+        verify(additionalRepository).save(Mockito.any());
     }
 
     /**
@@ -85,10 +79,10 @@ class AdditionalServiceImplTest {
         additional.setName("Name");
         additional.setPrice(10.0d);
         additional.setType("Type");
-        when(additionalRepository.save(Mockito.<Additional>any())).thenReturn(additional);
+        when(additionalRepository.save(Mockito.any())).thenReturn(additional);
         AdditionalDTO additionalDTO = new AdditionalDTO();
         AdditionalDTO actualCreateItensResult = additionalServiceImpl.createItens(additionalDTO);
-        verify(additionalRepository).save(Mockito.<Additional>any());
+        verify(additionalRepository).save(Mockito.any());
         assertEquals("Item", additionalDTO.getType());
         assertEquals("Name", actualCreateItensResult.getName());
         assertEquals("The characteristics of someone or something", actualCreateItensResult.getDescription());
@@ -102,9 +96,9 @@ class AdditionalServiceImplTest {
      */
     @Test
     void testCreateItens2() {
-        when(additionalRepository.save(Mockito.<Additional>any())).thenThrow(new RuntimeException("Item"));
+        when(additionalRepository.save(Mockito.any())).thenThrow(new RuntimeException("Item"));
         assertThrows(RuntimeException.class, () -> additionalServiceImpl.createItens(new AdditionalDTO()));
-        verify(additionalRepository).save(Mockito.<Additional>any());
+        verify(additionalRepository).save(Mockito.any());
     }
 
     /**
@@ -198,11 +192,11 @@ class AdditionalServiceImplTest {
     @Test
     void testGetServices4() {
         when(additionalRepository.findByNameIgnoreCaseOrDescriptionIgnoreCaseOrPriceIgnoreCaseOrTypeIgnoreCase(
-                Mockito.<String>any(), Mockito.<String>any(), Mockito.<Double>any(), Mockito.<String>any(),
-                Mockito.<Pageable>any())).thenReturn(new PageImpl<>(new ArrayList<>()));
+                Mockito.any(), Mockito.any(), Mockito.<Double>any(), Mockito.any(),
+                Mockito.any())).thenReturn(new PageImpl<>(new ArrayList<>()));
         Page<AdditionalDTO> actualServices = additionalServiceImpl.getServices("42", null);
         verify(additionalRepository).findByNameIgnoreCaseOrDescriptionIgnoreCaseOrPriceIgnoreCaseOrTypeIgnoreCase(eq("42"),
-                eq("42"), Mockito.<Double>any(), eq("42"), Mockito.<Pageable>any());
+                eq("42"), Mockito.<Double>any(), eq("42"), Mockito.any());
         assertTrue(actualServices.toList().isEmpty());
     }
 
@@ -213,11 +207,11 @@ class AdditionalServiceImplTest {
     @Test
     void testGetServices5() {
         when(additionalRepository.findByNameIgnoreCaseOrDescriptionIgnoreCaseOrPriceIgnoreCaseOrTypeIgnoreCase(
-                Mockito.<String>any(), Mockito.<String>any(), Mockito.<Double>any(), Mockito.<String>any(),
-                Mockito.<Pageable>any())).thenThrow(new RuntimeException("foo"));
+                Mockito.any(), Mockito.any(), Mockito.<Double>any(), Mockito.any(),
+                Mockito.any())).thenThrow(new RuntimeException("foo"));
         assertThrows(RuntimeException.class, () -> additionalServiceImpl.getServices("42", null));
         verify(additionalRepository).findByNameIgnoreCaseOrDescriptionIgnoreCaseOrPriceIgnoreCaseOrTypeIgnoreCase(eq("42"),
-                eq("42"), Mockito.<Double>any(), eq("42"), Mockito.<Pageable>any());
+                eq("42"), Mockito.<Double>any(), eq("42"), Mockito.any());
     }
 
     /**
@@ -282,12 +276,12 @@ class AdditionalServiceImplTest {
         additional2.setName("Name");
         additional2.setPrice(10.0d);
         additional2.setType("Type");
-        when(additionalRepository.save(Mockito.<Additional>any())).thenReturn(additional2);
+        when(additionalRepository.save(Mockito.any())).thenReturn(additional2);
         when(additionalRepository.getReferenceById(Mockito.<Long>any())).thenReturn(additional);
         AdditionalDTO additionalDTO = new AdditionalDTO();
         AdditionalDTO actualUpdateServicesResult = additionalServiceImpl.updateServices(1L, additionalDTO);
         verify(additionalRepository).getReferenceById(Mockito.<Long>any());
-        verify(additionalRepository).save(Mockito.<Additional>any());
+        verify(additionalRepository).save(Mockito.any());
         assertEquals("Name", actualUpdateServicesResult.getName());
         assertEquals("The characteristics of someone or something", actualUpdateServicesResult.getDescription());
         assertEquals("Type", additionalDTO.getType());
@@ -308,11 +302,11 @@ class AdditionalServiceImplTest {
         additional.setName("Name");
         additional.setPrice(10.0d);
         additional.setType("Type");
-        when(additionalRepository.save(Mockito.<Additional>any())).thenThrow(new RuntimeException("foo"));
+        when(additionalRepository.save(Mockito.any())).thenThrow(new RuntimeException("foo"));
         when(additionalRepository.getReferenceById(Mockito.<Long>any())).thenReturn(additional);
         assertThrows(RuntimeException.class, () -> additionalServiceImpl.updateServices(1L, new AdditionalDTO()));
         verify(additionalRepository).getReferenceById(Mockito.<Long>any());
-        verify(additionalRepository).save(Mockito.<Additional>any());
+        verify(additionalRepository).save(Mockito.any());
     }
 
     /**

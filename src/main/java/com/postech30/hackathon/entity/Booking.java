@@ -32,7 +32,7 @@ public class Booking {
 //            {@JoinColumn(name="room_id")}, inverseJoinColumns=
 //            {@JoinColumn(name="book_id")})
 //    private List<Room> rooms;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "services_booked",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "service_id"))
