@@ -11,6 +11,7 @@ import com.postech30.hackathon.repository.AdditionalRepository;
 import com.postech30.hackathon.repository.BookingRepository;
 import com.postech30.hackathon.repository.ClientRepository;
 import com.postech30.hackathon.service.BookingService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,9 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private EmailServiceImpl emailService;
+
     @Override
     public Page<BookingDTO> getAll(Pageable pageable) {
         Page<Booking> page;
@@ -46,7 +50,7 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public BookingDTO book(BookingDTO bookingDto) {
+    public BookingDTO book(BookingDTO bookingDto) throws MessagingException {
         var booking = toEntity(bookingDto);
         Booking savedBooking = bookingRepository.save(booking);
 
@@ -56,6 +60,7 @@ public class BookingServiceImpl implements BookingService {
         savedBooking.setTotalValue(calculateTotalValue(savedBooking));
         savedBooking = bookingRepository.save(savedBooking);
 
+        emailService.sendMail(savedBooking);
         return BookingMapper.toDTO(savedBooking);
     }
 

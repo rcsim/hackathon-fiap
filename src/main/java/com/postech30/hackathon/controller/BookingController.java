@@ -1,8 +1,11 @@
 package com.postech30.hackathon.controller;
 
 import com.postech30.hackathon.dto.BookingDTO;
+import com.postech30.hackathon.entity.Booking;
 import com.postech30.hackathon.exceptions.BookingNotFoundException;
 import com.postech30.hackathon.service.BookingService;
+import com.postech30.hackathon.service.impl.EmailServiceImpl;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +19,11 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+
+    @Autowired
+    private EmailServiceImpl emailService;
     @GetMapping
-    public ResponseEntity<Page<BookingDTO>> getBooking( Pageable pageable){
+    public ResponseEntity<Page<BookingDTO>> getBooking( Pageable pageable)  {
         Page<BookingDTO> bookings = bookingService.getAll(pageable);
         return  ResponseEntity.ok().body(bookings);
     }
@@ -27,7 +33,7 @@ public class BookingController {
         return  ResponseEntity.ok().body(booking);
     }
     @PostMapping()
-    public ResponseEntity<BookingDTO> book(@RequestBody BookingDTO bookingDto){
+    public ResponseEntity<BookingDTO> book(@RequestBody BookingDTO bookingDto) throws MessagingException {
         BookingDTO booking = bookingService.book(bookingDto);
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
 
