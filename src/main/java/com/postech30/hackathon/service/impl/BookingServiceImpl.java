@@ -73,8 +73,8 @@ public class BookingServiceImpl implements BookingService {
 
         Booking resultBooking = bookingRepository.save(savedBooking);
 
-        emailService.sendMail(savedBooking);
-        return BookingMapper.toDTO(savedBooking);
+        emailService.sendMail(resultBooking);
+        return BookingMapper.toDTO(resultBooking);
     }
 
 
