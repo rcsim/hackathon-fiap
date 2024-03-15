@@ -37,7 +37,6 @@ public class ClientDTO {
 
     //Change the type of the attribute to a Date
     @JsonProperty
-    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "A data de nascimento é um campo de preenchimento obrigatório")
     private LocalDate birthDate;
 

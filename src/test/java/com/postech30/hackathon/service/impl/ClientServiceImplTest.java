@@ -220,6 +220,8 @@ class ClientServiceImplTest {
 
     @Test
     void testDeleteClient() {
+
+        when(mockClientRepository.existsById(0L)).thenReturn(true);
         clientServiceImplUnderTest.deleteClient(0L);
 
         verify(mockClientRepository).deleteById(0L);
