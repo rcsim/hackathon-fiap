@@ -9,13 +9,17 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/building")
 public class BuildingController {
 
@@ -33,7 +37,7 @@ public class BuildingController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<BuildingDTO> createBuilding(@RequestBody BuildingDTO building) {
+    public ResponseEntity<BuildingDTO> createBuilding(@RequestBody @Valid BuildingDTO building) {
         BuildingDTO createdBuilding = buildingService.createBuilding(building);
         return ResponseEntity.ok(createdBuilding);
     }
@@ -49,7 +53,7 @@ public class BuildingController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<BuildingDTO> updateBuilding(@PathVariable String id, @RequestBody BuildingDTO building) {
+    public ResponseEntity<BuildingDTO> updateBuilding(@PathVariable String id, @RequestBody @Valid BuildingDTO building) {
         BuildingDTO updatedBuilding = buildingService.updateBuilding(id, building);
         return ResponseEntity.ok(updatedBuilding);
     }
@@ -65,9 +69,9 @@ public class BuildingController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<Void> deleteBuilding(@PathVariable String id) {
+    public ResponseEntity<String> deleteBuilding(@PathVariable String id) {
         buildingService.deleteBuilding(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.OK).body("Prédio deletado com sucesso.");
     }
 
     @GetMapping("/{id}")

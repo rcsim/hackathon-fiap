@@ -30,7 +30,7 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public BuildingDTO updateBuilding(String id, BuildingDTO buildingDTO) {
-        Building building = buildingRepository.findById(Long.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("Predio não Encontrado"));
+        Building building = buildingRepository.findById(Long.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("Prédio não Encontrado"));
         building.setName(buildingDTO.getName());
         Location location = locationRepository.findById(Long.valueOf(buildingDTO.getLocationId())).orElseThrow(() -> new ResourceNotFoundException("Localização enviado no body não encontrada"));
         building.setLocation(location);
@@ -39,21 +39,23 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public void deleteBuilding(String id) {
+
+        if (!buildingRepository.existsById(Long.valueOf(id))) {
+            throw new ResourceNotFoundException("Predio não Encontrado");
+        }
         buildingRepository.deleteById(Long.valueOf(id));
     }
 
     @Override
     public BuildingDTO getBuildingById(String id) {
 
-        Building building = buildingRepository.findById(Long.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("Predio não Encontrado"));
+        Building building = buildingRepository.findById(Long.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("Prédio não Encontrado"));
         return mapToDTO(building);
     }
 
     @Override
     public List<BuildingDTO> getAllBuildings() {
-        return buildingRepository.findAll().stream()
-                .map(this::mapToDTO)
-                .collect(Collectors.toList());
+        return buildingRepository.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
     private BuildingDTO mapToDTO(Building building) {

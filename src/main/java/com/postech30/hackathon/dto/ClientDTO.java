@@ -1,6 +1,10 @@
 package com.postech30.hackathon.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,35 +20,37 @@ public class ClientDTO {
     private Long id;
 
     @JsonProperty
-    @NotNull(message = "O país é um campo de preenchimento obrigatório")
+    @NotBlank(message = "O país é um campo de preenchimento obrigatório")
     private String country;
 
     @JsonProperty
-    @NotNull(message = "O CPF é um campo de preenchimento obrigatório")
+    @NotBlank(message = "O CPF é um campo de preenchimento obrigatório")
     private String cpf;
 
     @JsonProperty
-    @NotNull(message = "O passaporte é um campo de preenchimento obrigatório")
+    @NotBlank(message = "O passaporte é um campo de preenchimento obrigatório")
     private String passport;
 
     @JsonProperty
-    @NotNull(message = "O nome completo é um campo de preenchimento obrigatório")
+    @NotBlank(message = "O nome completo é um campo de preenchimento obrigatório")
     private String fullName;
 
     //Change the type of the attribute to a Date
     @JsonProperty
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "A data de nascimento é um campo de preenchimento obrigatório")
     private LocalDate birthDate;
 
     @JsonProperty
-    @NotNull(message = "O endereço é um campo de preenchimento obrigatório")
+    @NotBlank(message = "O endereço é um campo de preenchimento obrigatório")
     private String address;
 
     @JsonProperty
-    @NotNull(message = "O telefone é um campo de preenchimento obrigatório")
+    @NotBlank(message = "O telefone é um campo de preenchimento obrigatório")
     private String phone;
 
     @JsonProperty
-    @NotNull(message = "O e-mail é um campo de preenchimento obrigatório")
+    @Email
+    @NotBlank(message = "O e-mail é um campo de preenchimento obrigatório")
     private String email;
 }

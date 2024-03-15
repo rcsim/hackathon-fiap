@@ -1,6 +1,6 @@
 package com.postech30.hackathon.service;
 
-import com.postech30.hackathon.dto.AvaliableRoomDTO;
+import com.postech30.hackathon.dto.AvailableRoomDTO;
 import com.postech30.hackathon.dto.RoomDTO;
 
 import java.util.List;
@@ -17,5 +17,5 @@ public interface RoomService {
 
     List<RoomDTO> getAllRooms();
 
-    List<RoomDTO> getAvaliableRooms(AvaliableRoomDTO avaliableRoomDTO);
+    List<RoomDTO> getAvaliableRooms(AvailableRoomDTO availableRoomDTO);
 }

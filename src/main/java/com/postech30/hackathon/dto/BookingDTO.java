@@ -1,5 +1,6 @@
 package com.postech30.hackathon.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,16 +18,22 @@ import java.util.List;
 public class BookingDTO {
 
     private Long id;
+
     @JsonProperty
-    @NotNull(message = "idCliente é um campo obrigatorio ")
+    @NotNull(message = "idCliente é um campo obrigatório ")
     private Long idClient;
+
     @JsonProperty
-    @NotNull(message = "data de checkin é um campo obrigatorio ")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @NotNull(message = "data de checkin é um campo obrigatório ")
     private LocalDate checkInDate;
+
     @JsonProperty
-    @NotNull(message = "data de checkout é um campo obrigatorio ")
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @NotNull(message = "data de checkout é um campo obrigatório ")
     private LocalDate checkOutDate;
 
+    @JsonProperty
     private List<Long> rooms;
 
     private List<Long> services;

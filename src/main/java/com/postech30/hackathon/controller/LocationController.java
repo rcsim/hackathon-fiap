@@ -9,13 +9,17 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/location")
 public class LocationController {
 
@@ -33,7 +37,7 @@ public class LocationController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<LocationDTO> createLocation(@RequestBody LocationDTO locationDTO) {
+    public ResponseEntity<LocationDTO> createLocation(@RequestBody @Valid LocationDTO locationDTO) {
         LocationDTO createdLocation = locationService.createLocation(locationDTO);
         return ResponseEntity.ok(createdLocation);
     }
@@ -49,7 +53,7 @@ public class LocationController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<LocationDTO> updateLocation(@PathVariable String id, @RequestBody LocationDTO locationDTO) {
+    public ResponseEntity<LocationDTO> updateLocation(@PathVariable String id, @RequestBody @Valid LocationDTO locationDTO) {
         LocationDTO updatedLocation = locationService.updateLocation(id, locationDTO);
         return ResponseEntity.ok(updatedLocation);
     }
@@ -65,9 +69,9 @@ public class LocationController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<Void> deleteLocation(@PathVariable String id) {
+    public ResponseEntity<String> deleteLocation(@PathVariable String id) {
         locationService.deleteLocation(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body("Localização deletado com sucesso.");
     }
 
     @GetMapping("/{id}")

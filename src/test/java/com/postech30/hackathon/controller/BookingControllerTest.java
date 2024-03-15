@@ -1,6 +1,6 @@
 package com.postech30.hackathon.controller;
 
-import com.postech30.hackathon.dto.AvaliableRoomDTO;
+import com.postech30.hackathon.dto.AvailableRoomDTO;
 import com.postech30.hackathon.dto.BookingDTO;
 import com.postech30.hackathon.dto.RoomDTO;
 import com.postech30.hackathon.exceptions.BookingNotFoundException;
@@ -57,7 +57,7 @@ class BookingControllerTest {
         roomDTO.setType("type");
         roomDTO.setTotalPeople(0);
         final List<RoomDTO> roomDTOS = List.of(roomDTO);
-        when(mockRoomService.getAvaliableRooms(any(AvaliableRoomDTO.class))).thenReturn(roomDTOS);
+        when(mockRoomService.getAvaliableRooms(any(AvailableRoomDTO.class))).thenReturn(roomDTOS);
 
         final MockHttpServletResponse response = mockMvc.perform(get("/book/avaliable").content("content").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andReturn().getResponse();
 
@@ -66,7 +66,7 @@ class BookingControllerTest {
 
     @Test
     void testGetAvaliableRoomsRoomServiceReturnsNoItems() throws Exception {
-        when(mockRoomService.getAvaliableRooms(any(AvaliableRoomDTO.class))).thenReturn(Collections.emptyList());
+        when(mockRoomService.getAvaliableRooms(any(AvailableRoomDTO.class))).thenReturn(Collections.emptyList());
 
         final MockHttpServletResponse response = mockMvc.perform(get("/book/avaliable").content("content").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andReturn().getResponse();
 
