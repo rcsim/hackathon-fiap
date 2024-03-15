@@ -67,15 +67,15 @@ public class RoomServiceimpl implements RoomService {
 
     @Override
     public RoomDTO getRoomById(String id) {
-       Room room= roomRepository.findById(Long.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("Quarto não Encontrado"));
-            return fromEntity(room);
+        Room room = roomRepository.findById(Long.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("Quarto não Encontrado"));
+        return fromEntity(room);
     }
 
     @Override
     public List<RoomDTO> getAllRooms() {
-       return roomRepository.findAll().stream()
-               .map(this::fromEntity)
-               .collect(Collectors.toList());
+        return roomRepository.findAll().stream()
+                .map(this::fromEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -87,6 +87,7 @@ public class RoomServiceimpl implements RoomService {
                 .collect(Collectors.toList());
         return roomAvaliable.stream().map(this::fromEntity).collect(Collectors.toList());
     }
+
     private boolean isRoomAvailable(Room room, LocalDate checkInDate, LocalDate checkOutDate) {
         List<Booking> bookings = bookingRepository.findBookingsByRoomIdAndOverlappingDates(room.getId(), checkInDate, checkOutDate);
 
@@ -107,6 +108,7 @@ public class RoomServiceimpl implements RoomService {
         dto.setDailyRate(room.getDailyRate());
         return dto;
     }
+
     private Room toEntity(RoomDTO roomDTO) {
         Room room = new Room();
         room.setId(Long.valueOf(roomDTO.getId()));

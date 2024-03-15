@@ -6,8 +6,12 @@ import java.util.List;
 
 public interface BuildingService {
     BuildingDTO createBuilding(BuildingDTO buildingDTO);
+
     BuildingDTO updateBuilding(String id, BuildingDTO buildingDTO);
+
     void deleteBuilding(String id);
+
     BuildingDTO getBuildingById(String id);
+
     List<BuildingDTO> getAllBuildings();
 }
