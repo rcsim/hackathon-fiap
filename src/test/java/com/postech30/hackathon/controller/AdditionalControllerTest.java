@@ -2,6 +2,7 @@ package com.postech30.hackathon.controller;
 
 import com.postech30.hackathon.dto.AdditionalDTO;
 import com.postech30.hackathon.entity.Additional;
+import com.postech30.hackathon.exceptions.AdditionalNotFoundException;
 import com.postech30.hackathon.repository.AdditionalRepository;
 import com.postech30.hackathon.service.AdditionalService;
 import com.postech30.hackathon.service.impl.AdditionalServiceImpl;
@@ -117,7 +118,7 @@ class AdditionalControllerTest {
      * Method under test: {@link AdditionalController#findById(Long)}
      */
     @Test
-    void testFindById() {
+    void testFindById() throws AdditionalNotFoundException {
 
         Additional additional = new Additional();
         additional.setDescription("The characteristics of someone or something");
@@ -147,7 +148,7 @@ class AdditionalControllerTest {
      * {@link AdditionalController#updateServices(Long, AdditionalDTO)}
      */
     @Test
-    void testUpdateServices() {
+    void testUpdateServices() throws AdditionalNotFoundException {
 
         Additional additional = new Additional();
         additional.setDescription("The characteristics of someone or something");
@@ -182,7 +183,7 @@ class AdditionalControllerTest {
      * Method under test: {@link AdditionalController#deleteServices(Long)}
      */
     @Test
-    void testDeleteServices() {
+    void testDeleteServices() throws AdditionalNotFoundException {
 
 
         AdditionalRepository additionalRepository = mock(AdditionalRepository.class);

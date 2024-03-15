@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5d60d663-2f8a-4e2f-931f-668fa314987a",
+		"_postman_id": "ac4edf47-3f30-47e0-96f2-56906c2883d4",
 		"name": "Hackaton",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "27280848"
@@ -180,7 +180,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"checkInDate\":\"\",\r\n    \"checkOutDate\":\"\"\r\n}",
+							"raw": "{\r\n    \"checkInDate\":\"01/01/2020\",\r\n    \"checkOutDate\":\"10/01/2020\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -248,7 +248,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"idClient\": 1,\r\n    \"checkInDate\": \"01/01/2020\",\r\n    \"checkOutDate\": \"10/01/2020\",\r\n    \"rooms\": [],\r\n    \"services\": [],\r\n    \"totalValue\": 0,\r\n    \"guests\": 0\r\n}",
+							"raw": "{\r\n    \"idClient\": 1,\r\n    \"checkInDate\": \"2020-01-01\",\r\n    \"checkOutDate\": \"2020-01-10\",\r\n    \"rooms\": [],\r\n    \"services\": [],\r\n    \"totalValue\": 0,\r\n    \"guests\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -276,7 +276,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"checkInDate\": \"\",\r\n  \"checkOutDate\": \"\"\r\n}",
+							"raw": "{\r\n    \"idClient\": 1,\r\n    \"checkInDate\": \"2020-01-01\",\r\n    \"checkOutDate\": \"2020-01-10\",\r\n    \"rooms\": [],\r\n    \"services\": [],\r\n    \"totalValue\": 0.0,\r\n    \"guests\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -490,7 +490,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"country\":\"Teste\",\r\n    \"cpf\":\"111-111-111.11\",\r\n    \"passport\":\"218921928\",\r\n    \"fullName\":\"Teste da Silva\",\r\n    \"birthDate\":\"01/01/2020\",\r\n    \"address\":\"Rua Teste\",\r\n    \"phone\":\"5511912345678\",\r\n    \"email\":\"teste@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"country\":\"Teste\",\r\n    \"cpf\":\"111-111-111.11\",\r\n    \"passport\":\"218921928\",\r\n    \"fullName\":\"Teste da Silva\",\r\n    \"birthDate\":\"2020-01-10\",\r\n    \"address\":\"Rua Teste\",\r\n    \"phone\":\"5511912345678\",\r\n    \"email\":\"teste@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -518,7 +518,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"country\":\"Teste Atualizado\",\r\n    \"cpf\":\"111-111-111.12\",\r\n    \"passport\":\"218921928\",\r\n    \"fullName\":\"Teste da Silva\",\r\n    \"birthDate\":\"01/01/2020\",\r\n    \"address\":\"Rua Teste\",\r\n    \"phone\":\"5511912345678\",\r\n    \"email\":\"teste@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"country\":\"Teste Atualizado\",\r\n    \"cpf\":\"111-111-111.12\",\r\n    \"passport\":\"218921928\",\r\n    \"fullName\":\"Teste da Silva\",\r\n    \"birthDate\":\"2020-01-10\",\r\n    \"address\":\"Rua Teste\",\r\n    \"phone\":\"5511912345678\",\r\n    \"email\":\"teste@gmail.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -633,6 +633,35 @@
 					"response": []
 				},
 				{
+					"name": "Update Location",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Teste Atualizado\",\r\n    \"address\":\"Teste\",\r\n    \"zipCode\":\"0101010\",\r\n    \"city\":\"Teste\",\r\n    \"state\":\"Teste\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/location/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"location",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete Location",
 					"request": {
 						"method": "DELETE",
@@ -703,7 +732,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"buildingId\": \"1\",\r\n    \"locationId\": \"1\",\r\n    \"type\": \"Standart\",\r\n    \"totalPeople\": 0,\r\n    \"totalBeds\": 2,\r\n    \"otherFurniture\": \"Sofá, Poltrona\",\r\n    \"bathroom\": \"2\",\r\n    \"dailyRate\": 5.0\r\n}",
+							"raw": "{\r\n    \"buildingId\": \"1\",\r\n    \"locationId\": \"1\",\r\n    \"type\": \"Padrao\",\r\n    \"totalPeople\": 0,\r\n    \"totalBeds\": 2,\r\n    \"otherFurniture\": \"Sofa, Poltrona\",\r\n    \"bathroom\": \"2\",\r\n    \"dailyRate\": 5.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -731,7 +760,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"buildingId\": \"1\",\r\n    \"locationId\": \"1\",\r\n    \"type\": \"Standart\",\r\n    \"totalPeople\": 2,\r\n    \"totalBeds\": 2,\r\n    \"otherFurniture\": \"Sofá, Poltrona\",\r\n    \"bathroom\": \"2\",\r\n    \"dailyRate\": 5.0\r\n}",
+							"raw": "{\r\n    \"buildingId\": \"1\",\r\n    \"locationId\": \"1\",\r\n    \"type\": \"Padrao 2\",\r\n    \"totalPeople\": 2,\r\n    \"totalBeds\": 2,\r\n    \"otherFurniture\": \"Sofa, Poltrona\",\r\n    \"bathroom\": \"2\",\r\n    \"dailyRate\": 5.0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -2,6 +2,8 @@ package com.postech30.hackathon.service.impl;
 
 import com.postech30.hackathon.dto.AdditionalDTO;
 import com.postech30.hackathon.entity.Additional;
+import com.postech30.hackathon.exceptions.AdditionalNotFoundException;
+import com.postech30.hackathon.exceptions.ResourceNotFoundException;
 import com.postech30.hackathon.mapper.AdditionalMapper;
 import com.postech30.hackathon.repository.AdditionalRepository;
 import com.postech30.hackathon.service.AdditionalService;
@@ -50,27 +52,24 @@ public class AdditionalServiceImpl implements AdditionalService {
     }
 
     @Override
-    public AdditionalDTO getServicesById(Long id) {
-        Additional additional = additionalRepository.findById(id).orElseThrow(() -> new RuntimeException("Adicional não encontrado"));
+    public AdditionalDTO getServicesById(Long id) throws AdditionalNotFoundException {
+        Additional additional = additionalRepository.findById(id).orElseThrow(() -> new AdditionalNotFoundException("Adicional não encontrado"));
         return AdditionalMapper.toDTO(additional);
 
     }
 
     @Override
-    public AdditionalDTO updateServices(Long id, AdditionalDTO additionalDTO) {
-        if (!additionalRepository.existsById(id)) {
-            throw new RuntimeException("Adicional não encontrado");
-        }
-        Additional additional = additionalRepository.getReferenceById(id);
+    public AdditionalDTO updateServices(Long id, AdditionalDTO additionalDTO) throws AdditionalNotFoundException {
+        Additional additional = additionalRepository.findById(id).orElseThrow(() -> new AdditionalNotFoundException("Adicional não encontrado"));
         additionalDTO.setType(additional.getType());
         mapTo(additionalDTO, additional);
         return AdditionalMapper.toDTO(additionalRepository.save(additional));
     }
 
     @Override
-    public void deleteServices(Long id) {
+    public void deleteServices(Long id) throws AdditionalNotFoundException {
         if (!additionalRepository.existsById(id)) {
-            throw new RuntimeException("Adicional não encontrado");
+            throw new AdditionalNotFoundException("Adicional não encontrado");
         }
         additionalRepository.deleteById(id);
     }
