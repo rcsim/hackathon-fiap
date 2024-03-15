@@ -97,7 +97,7 @@ class BookingTest {
         Client.setPhone("6625550144");
         LocalDate checkInDate = LocalDate.of(1970, 1, 1);
         LocalDate checkOutDate = LocalDate.of(1970, 1, 1);
-        Booking actualBooking = new Booking(1L, Client, checkInDate, checkOutDate, new ArrayList<>(), 10.0d, 1);
+        Booking actualBooking = new Booking(1L, Client, checkInDate, checkOutDate, new ArrayList<>(),new ArrayList<>(), 10.0d, 1);
 
         assertEquals("1970-01-01", actualBooking.getCheckInDate().toString());
         assertEquals("1970-01-01", actualBooking.getCheckOutDate().toString());
@@ -134,9 +134,13 @@ class BookingTest {
         additional.setPrice(10.0d);
         additional.setType("Type");
 
+
+
+
         ArrayList<Additional> additional2 = new ArrayList<>();
+        ArrayList<Room> room = new ArrayList<>();
         additional2.add(additional);
-        Booking actualBooking = new Booking(1L, Client, checkInDate, checkOutDate, additional2, 10.0d, 1);
+        Booking actualBooking = new Booking(1L, Client, checkInDate, checkOutDate, room,additional2, 10.0d, 1);
 
         assertEquals("1970-01-01", actualBooking.getCheckInDate().toString());
         assertEquals("1970-01-01", actualBooking.getCheckOutDate().toString());
@@ -183,7 +187,10 @@ class BookingTest {
         ArrayList<Additional> additional3 = new ArrayList<>();
         additional3.add(additional2);
         additional3.add(additional);
-        Booking actualBooking = new Booking(1L, Client, checkInDate, checkOutDate, additional3, 10.0d, 1);
+        ArrayList<Room> room = new ArrayList<>();
+
+
+        Booking actualBooking = new Booking(1L, Client, checkInDate, checkOutDate,room ,additional3, 10.0d, 1);
 
         assertEquals("1970-01-01", actualBooking.getCheckInDate().toString());
         assertEquals("1970-01-01", actualBooking.getCheckOutDate().toString());

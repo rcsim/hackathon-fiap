@@ -27,11 +27,11 @@ public class Booking {
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
 
-    //    @ManyToMany
-//    @JoinTable(name="rooms_booked", joinColumns=
-//            {@JoinColumn(name="room_id")}, inverseJoinColumns=
-//            {@JoinColumn(name="book_id")})
-//    private List<Room> rooms;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(name = "rooms_booked", joinColumns =
+            {@JoinColumn(name = "room_id")}, inverseJoinColumns =
+            {@JoinColumn(name = "book_id")})
+    private List<Room> rooms;
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinTable(name = "services_booked",
             joinColumns = @JoinColumn(name = "book_id"),
