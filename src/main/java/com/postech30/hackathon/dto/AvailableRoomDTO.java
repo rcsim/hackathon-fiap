@@ -1,5 +1,6 @@
 package com.postech30.hackathon.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,10 +17,12 @@ import java.time.LocalDate;
 public class AvailableRoomDTO {
 
     @JsonProperty
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "A data de check-in é um campo de preenchimento obrigatório")
     private LocalDate checkInDate;
 
     @JsonProperty
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "A data de check-out é um campo de preenchimento obrigatório")
     private LocalDate checkOutDate;
 }
