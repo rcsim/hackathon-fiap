@@ -4,6 +4,7 @@ import com.postech30.hackathon.dto.BookingDTO;
 import com.postech30.hackathon.entity.Additional;
 import com.postech30.hackathon.entity.Booking;
 import com.postech30.hackathon.entity.Client;
+import com.postech30.hackathon.entity.Room;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -24,6 +25,9 @@ class BookingMapperTest {
         final Additional additional = new Additional();
         additional.setId(0L);
         booking.setAdditional(List.of(additional));
+        final Room room = new Room();
+        room.setId(0L);
+        booking.setRooms(List.of(room));
         booking.setTotalValue(0.0);
         booking.setGuests(0);
 
