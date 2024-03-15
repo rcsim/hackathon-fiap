@@ -1,11 +1,14 @@
 package com.postech30.hackathon.service.impl;
 
 
+import com.postech30.hackathon.dto.AvaliableRoomDTO;
 import com.postech30.hackathon.dto.RoomDTO;
+import com.postech30.hackathon.entity.Booking;
 import com.postech30.hackathon.entity.Building;
 import com.postech30.hackathon.entity.Location;
 import com.postech30.hackathon.entity.Room;
 import com.postech30.hackathon.exceptions.ResourceNotFoundException;
+import com.postech30.hackathon.repository.BookingRepository;
 import com.postech30.hackathon.repository.BuildingRepository;
 import com.postech30.hackathon.repository.LocationRepository;
 import com.postech30.hackathon.repository.RoomRepository;
@@ -13,6 +16,7 @@ import com.postech30.hackathon.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +31,9 @@ public class RoomServiceimpl implements RoomService {
 
     @Autowired
     private LocationRepository locationRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
 
     @Override
@@ -69,6 +76,21 @@ public class RoomServiceimpl implements RoomService {
        return roomRepository.findAll().stream()
                .map(this::fromEntity)
                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RoomDTO> getAvaliableRooms(AvaliableRoomDTO avaliableRoomDTO) {
+
+        List<Room> allRooms = roomRepository.findAll();
+        var roomAvaliable = allRooms.stream()
+                .filter(room -> isRoomAvailable(room, avaliableRoomDTO.getCheckInDate(), avaliableRoomDTO.getCheckOutDate()))
+                .collect(Collectors.toList());
+        return roomAvaliable.stream().map(this::fromEntity).collect(Collectors.toList());
+    }
+    private boolean isRoomAvailable(Room room, LocalDate checkInDate, LocalDate checkOutDate) {
+        List<Booking> bookings = bookingRepository.findBookingsByRoomIdAndOverlappingDates(room.getId(), checkInDate, checkOutDate);
+
+        return bookings.isEmpty();
     }
 
 
