@@ -59,7 +59,6 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void deleteClient(Long id) {
-
         if (!clientRepository.existsById(id)) {
             throw new ResourceNotFoundException("Cliente não encontrado");
         }

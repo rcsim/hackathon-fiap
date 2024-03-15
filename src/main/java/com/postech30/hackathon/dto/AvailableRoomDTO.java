@@ -17,12 +17,10 @@ import java.time.LocalDate;
 public class AvailableRoomDTO {
 
     @JsonProperty
-    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "A data de check-in é um campo de preenchimento obrigatório")
     private LocalDate checkInDate;
 
     @JsonProperty
-    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "A data de check-out é um campo de preenchimento obrigatório")
     private LocalDate checkOutDate;
 }
