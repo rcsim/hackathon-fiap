@@ -2,6 +2,7 @@ package com.postech30.hackathon.controller;
 
 import com.postech30.hackathon.dto.AdditionalDTO;
 import com.postech30.hackathon.entity.Additional;
+import com.postech30.hackathon.exceptions.AdditionalNotFoundException;
 import com.postech30.hackathon.service.AdditionalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -86,7 +87,7 @@ public class AdditionalController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<AdditionalDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<AdditionalDTO> findById(@PathVariable Long id) throws AdditionalNotFoundException {
         var services = additionalService.getServicesById(id);
         return ResponseEntity.ok(services);
     }
@@ -102,7 +103,7 @@ public class AdditionalController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<String> updateServices(@PathVariable Long id, @RequestBody @Valid AdditionalDTO additionalDTO) {
+    public ResponseEntity<String> updateServices(@PathVariable Long id, @RequestBody @Valid AdditionalDTO additionalDTO) throws AdditionalNotFoundException {
         additionalService.updateServices(id, additionalDTO);
         return ResponseEntity.status(HttpStatus.OK).body("Os dados do serviço foram atualizados!!");
     }
@@ -118,7 +119,7 @@ public class AdditionalController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<String> deleteServices(@PathVariable Long id) {
+    public ResponseEntity<String> deleteServices(@PathVariable Long id) throws AdditionalNotFoundException {
         additionalService.deleteServices(id);
         return ResponseEntity.status(HttpStatus.OK).body("Serviço excluído!!");
     }

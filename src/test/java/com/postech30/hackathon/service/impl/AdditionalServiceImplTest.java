@@ -2,6 +2,7 @@ package com.postech30.hackathon.service.impl;
 
 import com.postech30.hackathon.dto.AdditionalDTO;
 import com.postech30.hackathon.entity.Additional;
+import com.postech30.hackathon.exceptions.AdditionalNotFoundException;
 import com.postech30.hackathon.repository.AdditionalRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -218,7 +219,7 @@ class AdditionalServiceImplTest {
      * Method under test: {@link AdditionalServiceImpl#getServicesById(Long)}
      */
     @Test
-    void testGetServicesById() {
+    void testGetServicesById() throws AdditionalNotFoundException {
         Additional additional = new Additional();
         additional.setDescription("The characteristics of someone or something");
         additional.setId(1L);
@@ -262,7 +263,7 @@ class AdditionalServiceImplTest {
      * {@link AdditionalServiceImpl#updateServices(Long, AdditionalDTO)}
      */
     @Test
-    void testUpdateServices() {
+    void testUpdateServices() throws AdditionalNotFoundException {
         Additional additional = new Additional();
         additional.setDescription("The characteristics of someone or something");
         additional.setId(1L);
@@ -313,7 +314,7 @@ class AdditionalServiceImplTest {
      * Method under test: {@link AdditionalServiceImpl#deleteServices(Long)}
      */
     @Test
-    void testDeleteServices() {
+    void testDeleteServices() throws AdditionalNotFoundException {
         doNothing().when(additionalRepository).deleteById(Mockito.<Long>any());
         additionalServiceImpl.deleteServices(1L);
         verify(additionalRepository).deleteById(Mockito.<Long>any());
