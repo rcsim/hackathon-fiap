@@ -1,19 +1,12 @@
 package com.postech30.hackathon.service.impl;
 
 
-import com.postech30.hackathon.dto.AvaliableRoomDTO;
+import com.postech30.hackathon.dto.AvailableRoomDTO;
 import com.postech30.hackathon.dto.RoomDTO;
-import com.postech30.hackathon.entity.Booking;
-import com.postech30.hackathon.entity.Building;
-import com.postech30.hackathon.entity.Location;
-import com.postech30.hackathon.entity.Room;
+import com.postech30.hackathon.entity.*;
 import com.postech30.hackathon.exceptions.ResourceNotFoundException;
-import com.postech30.hackathon.repository.BookingRepository;
-import com.postech30.hackathon.repository.BuildingRepository;
-import com.postech30.hackathon.repository.LocationRepository;
-import com.postech30.hackathon.repository.RoomRepository;
+import com.postech30.hackathon.repository.*;
 import com.postech30.hackathon.service.RoomService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,20 +14,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class RoomServiceimpl implements RoomService {
+public class RoomServiceImpl implements RoomService {
 
-    @Autowired
-    private RoomRepository roomRepository;
+    private final RoomRepository roomRepository;
+    private final BuildingRepository buildingRepository;
+    private final LocationRepository locationRepository;
+    private final BookingRepository bookingRepository;
 
-    @Autowired
-    private BuildingRepository buildingRepository;
-
-    @Autowired
-    private LocationRepository locationRepository;
-
-    @Autowired
-    private BookingRepository bookingRepository;
-
+    public RoomServiceImpl(RoomRepository roomRepository, BuildingRepository buildingRepository, LocationRepository locationRepository, BookingRepository bookingRepository) {
+        this.roomRepository = roomRepository;
+        this.buildingRepository = buildingRepository;
+        this.locationRepository = locationRepository;
+        this.bookingRepository = bookingRepository;
+    }
 
     @Override
     public RoomDTO createRoom(RoomDTO roomDTO) {
@@ -46,7 +38,7 @@ public class RoomServiceimpl implements RoomService {
     public RoomDTO updateRoom(String id, RoomDTO roomDTO) {
         Room room = roomRepository.findById(Long.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("Quarto não Encontrado"));
         Location location = locationRepository.findById(Long.valueOf(roomDTO.getLocationId())).orElseThrow(() -> new ResourceNotFoundException("Localização não Encontrada"));
-        Building building = buildingRepository.findById(Long.valueOf(roomDTO.getBuildingId())).orElseThrow(() -> new ResourceNotFoundException("Predio não Encontrado"));
+        Building building = buildingRepository.findById(Long.valueOf(roomDTO.getBuildingId())).orElseThrow(() -> new ResourceNotFoundException("Prédio não Encontrado"));
 
         room.setBuilding(building);
         room.setLocation(location);
@@ -62,6 +54,9 @@ public class RoomServiceimpl implements RoomService {
 
     @Override
     public void deleteRoom(String id) {
+        if (!roomRepository.existsById(Long.valueOf(id))) {
+            throw new ResourceNotFoundException("Quarto não Encontrado");
+        }
         roomRepository.deleteById(Long.valueOf(id));
     }
 
@@ -73,19 +68,15 @@ public class RoomServiceimpl implements RoomService {
 
     @Override
     public List<RoomDTO> getAllRooms() {
-        return roomRepository.findAll().stream()
-                .map(this::fromEntity)
-                .collect(Collectors.toList());
+        return roomRepository.findAll().stream().map(this::fromEntity).collect(Collectors.toList());
     }
 
     @Override
-    public List<RoomDTO> getAvaliableRooms(AvaliableRoomDTO avaliableRoomDTO) {
+    public List<RoomDTO> getAvaliableRooms(AvailableRoomDTO availableRoomDTO) {
 
         List<Room> allRooms = roomRepository.findAll();
-        var roomAvaliable = allRooms.stream()
-                .filter(room -> isRoomAvailable(room, avaliableRoomDTO.getCheckInDate(), avaliableRoomDTO.getCheckOutDate()))
-                .collect(Collectors.toList());
-        return roomAvaliable.stream().map(this::fromEntity).collect(Collectors.toList());
+        var roomAvailable = allRooms.stream().filter(room -> isRoomAvailable(room, availableRoomDTO.getCheckInDate(), availableRoomDTO.getCheckOutDate())).toList();
+        return roomAvailable.stream().map(this::fromEntity).collect(Collectors.toList());
     }
 
     private boolean isRoomAvailable(Room room, LocalDate checkInDate, LocalDate checkOutDate) {
@@ -111,8 +102,7 @@ public class RoomServiceimpl implements RoomService {
 
     private Room toEntity(RoomDTO roomDTO) {
         Room room = new Room();
-        room.setId(Long.valueOf(roomDTO.getId()));
-        Building building = buildingRepository.findById(Long.valueOf(roomDTO.getBuildingId())).orElseThrow(() -> new ResourceNotFoundException("Predio não Encontrado"));
+        Building building = buildingRepository.findById(Long.valueOf(roomDTO.getBuildingId())).orElseThrow(() -> new ResourceNotFoundException("Prédio não Encontrado"));
         Location location = locationRepository.findById(Long.valueOf(roomDTO.getLocationId())).orElseThrow(() -> new ResourceNotFoundException("Localização não Encontrada"));
         room.setBuilding(building);
         room.setLocation(location);

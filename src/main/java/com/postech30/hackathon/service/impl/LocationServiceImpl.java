@@ -35,6 +35,10 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public void deleteLocation(String id) {
+
+        if (!locationRepository.existsById(Long.valueOf(id))) {
+            throw new ResourceNotFoundException("Localização não Encontrada");
+        }
         locationRepository.deleteById(Long.valueOf(id));
     }
 

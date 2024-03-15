@@ -1,9 +1,8 @@
 package com.postech30.hackathon.controller;
 
-import com.postech30.hackathon.dto.AvaliableRoomDTO;
+import com.postech30.hackathon.dto.AvailableRoomDTO;
 import com.postech30.hackathon.dto.BookingDTO;
 import com.postech30.hackathon.dto.RoomDTO;
-import com.postech30.hackathon.entity.Additional;
 import com.postech30.hackathon.entity.Booking;
 import com.postech30.hackathon.exceptions.BookingNotFoundException;
 import com.postech30.hackathon.exceptions.RoomNotAvailableException;
@@ -16,15 +15,18 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@Validated
 @RequestMapping("/book")
 public class BookingController {
 
@@ -51,8 +53,8 @@ public class BookingController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<List<RoomDTO>> getAvaliableRooms(@RequestBody AvaliableRoomDTO avaliableRoomDTO) {
-        return ResponseEntity.ok().body(roomService.getAvaliableRooms(avaliableRoomDTO));
+    public ResponseEntity<List<RoomDTO>> getAvaliableRooms(@RequestBody @Valid AvailableRoomDTO availableRoomDTO) {
+        return ResponseEntity.ok().body(roomService.getAvaliableRooms(availableRoomDTO));
     }
 
     @GetMapping
@@ -98,7 +100,7 @@ public class BookingController {
             @ApiResponse(responseCode = "404", description = "Recurso não encontrado.", content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.", content = {@Content(mediaType = "application/json")})
     })
-    public ResponseEntity<BookingDTO> book(@RequestBody BookingDTO bookingDto) throws MessagingException, RoomNotAvailableException {
+    public ResponseEntity<BookingDTO> book(@RequestBody @Valid BookingDTO bookingDto) throws MessagingException, RoomNotAvailableException {
         BookingDTO booking = bookingService.book(bookingDto);
         return new ResponseEntity<>(booking, HttpStatus.CREATED);
 

@@ -51,13 +51,16 @@ public class AdditionalServiceImpl implements AdditionalService {
 
     @Override
     public AdditionalDTO getServicesById(Long id) {
-        Additional additional = additionalRepository.findById(id).orElseThrow(() -> new RuntimeException("Serviço não encontrado"));
+        Additional additional = additionalRepository.findById(id).orElseThrow(() -> new RuntimeException("Adicional não encontrado"));
         return AdditionalMapper.toDTO(additional);
 
     }
 
     @Override
     public AdditionalDTO updateServices(Long id, AdditionalDTO additionalDTO) {
+        if (!additionalRepository.existsById(id)) {
+            throw new RuntimeException("Adicional não encontrado");
+        }
         Additional additional = additionalRepository.getReferenceById(id);
         additionalDTO.setType(additional.getType());
         mapTo(additionalDTO, additional);
@@ -66,6 +69,9 @@ public class AdditionalServiceImpl implements AdditionalService {
 
     @Override
     public void deleteServices(Long id) {
+        if (!additionalRepository.existsById(id)) {
+            throw new RuntimeException("Adicional não encontrado");
+        }
         additionalRepository.deleteById(id);
     }
 

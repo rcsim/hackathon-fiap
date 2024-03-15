@@ -1,6 +1,6 @@
 package com.postech30.hackathon.service.impl;
 
-import com.postech30.hackathon.dto.AvaliableRoomDTO;
+import com.postech30.hackathon.dto.AvailableRoomDTO;
 import com.postech30.hackathon.dto.RoomDTO;
 import com.postech30.hackathon.entity.*;
 import com.postech30.hackathon.repository.BookingRepository;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class RoomServiceimplTest {
+class RoomServiceImplTest {
 
     @Mock
     private RoomRepository mockRoomRepository;
@@ -33,7 +33,7 @@ class RoomServiceimplTest {
     private BookingRepository mockBookingRepository;
 
     @InjectMocks
-    private RoomServiceimpl roomServiceimplUnderTest;
+    private RoomServiceImpl roomServiceImplUnderTest;
 
     @Test
     void testGetAllRooms() {
@@ -54,7 +54,7 @@ class RoomServiceimplTest {
         final List<Room> rooms = List.of(room);
         when(mockRoomRepository.findAll()).thenReturn(rooms);
 
-        final List<RoomDTO> result = roomServiceimplUnderTest.getAllRooms();
+        final List<RoomDTO> result = roomServiceImplUnderTest.getAllRooms();
 
     }
 
@@ -62,14 +62,14 @@ class RoomServiceimplTest {
     void testGetAllRoomsRoomRepositoryReturnsNoItems() {
         when(mockRoomRepository.findAll()).thenReturn(Collections.emptyList());
 
-        final List<RoomDTO> result = roomServiceimplUnderTest.getAllRooms();
+        final List<RoomDTO> result = roomServiceImplUnderTest.getAllRooms();
 
         assertThat(result).isEqualTo(Collections.emptyList());
     }
 
     @Test
     void testGetAvaliableRooms() {
-        final AvaliableRoomDTO avaliableRoomDTO = new AvaliableRoomDTO(LocalDate.of(2020, 1, 1),
+        final AvailableRoomDTO availableRoomDTO = new AvailableRoomDTO(LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 1));
 
         final Room room = new Room();
@@ -100,25 +100,25 @@ class RoomServiceimplTest {
         when(mockBookingRepository.findBookingsByRoomIdAndOverlappingDates(0L, LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 1))).thenReturn(bookings);
 
-        final List<RoomDTO> result = roomServiceimplUnderTest.getAvaliableRooms(avaliableRoomDTO);
+        final List<RoomDTO> result = roomServiceImplUnderTest.getAvaliableRooms(availableRoomDTO);
 
         assertThat(result).isEqualTo(Collections.emptyList());
     }
 
     @Test
     void testGetAvaliableRoomsRoomRepositoryReturnsNoItems() {
-        final AvaliableRoomDTO avaliableRoomDTO = new AvaliableRoomDTO(LocalDate.of(2020, 1, 1),
+        final AvailableRoomDTO availableRoomDTO = new AvailableRoomDTO(LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 1));
         when(mockRoomRepository.findAll()).thenReturn(Collections.emptyList());
 
-        final List<RoomDTO> result = roomServiceimplUnderTest.getAvaliableRooms(avaliableRoomDTO);
+        final List<RoomDTO> result = roomServiceImplUnderTest.getAvaliableRooms(availableRoomDTO);
 
         assertThat(result).isEqualTo(Collections.emptyList());
     }
 
     @Test
     void testGetAvaliableRooms_BookingRepositoryReturnsNoItems() {
-        final AvaliableRoomDTO avaliableRoomDTO = new AvaliableRoomDTO(LocalDate.of(2020, 1, 1),
+        final AvailableRoomDTO availableRoomDTO = new AvailableRoomDTO(LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 1));
 
         final Room room = new Room();
@@ -141,7 +141,7 @@ class RoomServiceimplTest {
         when(mockBookingRepository.findBookingsByRoomIdAndOverlappingDates(0L, LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 1, 1))).thenReturn(Collections.emptyList());
 
-        final List<RoomDTO> result = roomServiceimplUnderTest.getAvaliableRooms(avaliableRoomDTO);
+        final List<RoomDTO> result = roomServiceImplUnderTest.getAvaliableRooms(availableRoomDTO);
 
     }
 }

@@ -23,6 +23,7 @@ public class Room {
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
+
     private String type;
     private int totalPeople;
     private int totalBeds;

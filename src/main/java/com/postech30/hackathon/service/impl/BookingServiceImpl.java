@@ -63,7 +63,7 @@ public class BookingServiceImpl implements BookingService {
             LocalDate checkOutDate = booking.getCheckOutDate();
             List<Booking> bookings = bookingRepository.findBookingsByRoomIdAndOverlappingDates(room.getId(), checkInDate, checkOutDate);
             if (!bookings.isEmpty()) {
-                throw new RoomNotAvailableException("Quarto " + room.getId() + " não está disponivel");
+                throw new RoomNotAvailableException("Quarto " + room.getId() + " não está disponível");
             }
         }
 
@@ -89,6 +89,9 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void delete(Long id) {
+        if (!bookingRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Reserva não encontrada");
+        }
         bookingRepository.deleteById(id);
     }
 
