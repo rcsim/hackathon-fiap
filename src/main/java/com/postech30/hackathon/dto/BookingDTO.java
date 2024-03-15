@@ -24,10 +24,12 @@ public class BookingDTO {
     private Long idClient;
 
     @JsonProperty
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "data de checkin é um campo obrigatório ")
     private LocalDate checkInDate;
 
     @JsonProperty
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "data de checkout é um campo obrigatório ")
     private LocalDate checkOutDate;
 
