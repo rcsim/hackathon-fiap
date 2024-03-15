@@ -1,23 +1,25 @@
 package com.postech30.hackathon.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Localidade {
+@Table(name="tb_location")
+public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
-    private String nome;
-    private String endereco;
-    private String cep;
-    private String cidade;
-    private String estado;
+    private Long id;
+    private String name;
+    private String address;
+    private String zipCode;
+    private String city;
+    private String state;
 }
