@@ -163,6 +163,7 @@ class AdditionalControllerTest {
         additional2.setPrice(10.0d);
         additional2.setType("Type");
         AdditionalRepository additionalRepository = mock(AdditionalRepository.class);
+        when(additionalRepository.existsById(1L)).thenReturn(true);
         when(additionalRepository.save(Mockito.any())).thenReturn(additional2);
         when(additionalRepository.getReferenceById(Mockito.<Long>any())).thenReturn(additional);
         AdditionalController additionalController = new AdditionalController(
@@ -183,8 +184,10 @@ class AdditionalControllerTest {
     @Test
     void testDeleteServices() {
 
+
         AdditionalRepository additionalRepository = mock(AdditionalRepository.class);
         doNothing().when(additionalRepository).deleteById(Mockito.<Long>any());
+        when(additionalRepository.existsById(1L)).thenReturn(true);
         ResponseEntity<String> actualDeleteServicesResult = (new AdditionalController(
                 new AdditionalServiceImpl(additionalRepository))).deleteServices(1L);
         verify(additionalRepository).deleteById(Mockito.<Long>any());

@@ -127,6 +127,7 @@ class ClientControllerTest {
 
         ClientRepository clientRepository = mock(ClientRepository.class);
         doNothing().when(clientRepository).deleteById(Mockito.<Long>any());
+        when(clientRepository.existsById(1L)).thenReturn(true);
         ResponseEntity<String> actualDeleteClientResult = (new ClientController(new ClientServiceImpl(clientRepository)))
                 .deleteClient(1L);
         verify(clientRepository).deleteById(Mockito.<Long>any());

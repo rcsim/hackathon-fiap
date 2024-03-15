@@ -103,6 +103,7 @@ class LocationServiceImplTest {
 
     @Test
     void testDeleteLocation() {
+        when(mockLocationRepository.existsById(0L)).thenReturn(true);
         locationServiceImplUnderTest.deleteLocation(String.valueOf(0L));
 
         verify(mockLocationRepository).deleteById(0L);
