@@ -17,6 +17,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Autowired
     private LocationRepository locationRepository;
+
     @Override
     public LocationDTO createLocation(LocationDTO locationDTO) {
 
@@ -28,7 +29,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationDTO updateLocation(String id, LocationDTO locationDTO) {
         Location location = locationRepository.findById(Long.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("Localização não Encontrada"));
-        location = mapTo(location,locationDTO);
+        location = mapTo(location, locationDTO);
         return LocationMapper.fromEntity(locationRepository.save(location));
     }
 
@@ -40,7 +41,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationDTO getLocationById(String id) {
 
-       Location location= locationRepository.findById(Long.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("Localização não Encontrada"));
+        Location location = locationRepository.findById(Long.valueOf(id)).orElseThrow(() -> new ResourceNotFoundException("Localização não Encontrada"));
         return LocationMapper.fromEntity(location);
     }
 
@@ -52,7 +53,7 @@ public class LocationServiceImpl implements LocationService {
                 .collect(Collectors.toList());
     }
 
-    private Location mapTo(Location location, LocationDTO locationDTO){
+    private Location mapTo(Location location, LocationDTO locationDTO) {
         location.setAddress(locationDTO.getAddress());
         location.setName(locationDTO.getName());
         location.setState(locationDTO.getState());

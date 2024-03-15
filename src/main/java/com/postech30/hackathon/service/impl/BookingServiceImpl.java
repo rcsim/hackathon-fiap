@@ -1,8 +1,6 @@
 package com.postech30.hackathon.service.impl;
 
-import com.postech30.hackathon.dto.AvaliableRoomDTO;
 import com.postech30.hackathon.dto.BookingDTO;
-import com.postech30.hackathon.dto.RoomDTO;
 import com.postech30.hackathon.entity.Additional;
 import com.postech30.hackathon.entity.Booking;
 import com.postech30.hackathon.entity.Room;
@@ -23,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -53,6 +50,7 @@ public class BookingServiceImpl implements BookingService {
         return BookingMapper.toDTO(bookingRepository.findById(id)
                 .orElseThrow(() -> new BookingNotFoundException("Reserva não encontrada")));
     }
+
     @Override
     public BookingDTO book(BookingDTO bookingDto) throws MessagingException, RoomNotAvailableException {
         var booking = toEntity(bookingDto);
@@ -93,7 +91,6 @@ public class BookingServiceImpl implements BookingService {
     public void delete(Long id) {
         bookingRepository.deleteById(id);
     }
-
 
 
     private Booking toEntity(BookingDTO bookingDto) {

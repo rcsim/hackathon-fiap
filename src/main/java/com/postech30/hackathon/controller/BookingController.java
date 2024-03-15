@@ -23,19 +23,19 @@ public class BookingController {
 
     private final BookingService bookingService;
 
-    private  final RoomService roomService;
+    private final RoomService roomService;
 
     private final EmailServiceImpl emailService;
 
-    public BookingController(BookingService bookingService, EmailServiceImpl emailService,RoomService roomService) {
+    public BookingController(BookingService bookingService, EmailServiceImpl emailService, RoomService roomService) {
         this.bookingService = bookingService;
         this.emailService = emailService;
         this.roomService = roomService;
     }
 
     @GetMapping("/avaliable")
-    public ResponseEntity<List<RoomDTO>> getAvaliableRooms(@RequestBody AvaliableRoomDTO avaliableRoomDTO){
-       return ResponseEntity.ok().body(roomService.getAvaliableRooms(avaliableRoomDTO));
+    public ResponseEntity<List<RoomDTO>> getAvaliableRooms(@RequestBody AvaliableRoomDTO avaliableRoomDTO) {
+        return ResponseEntity.ok().body(roomService.getAvaliableRooms(avaliableRoomDTO));
     }
 
     @GetMapping
@@ -68,7 +68,6 @@ public class BookingController {
         bookingService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("Reserva deletada com sucesso");
     }
-
 
 
 }
