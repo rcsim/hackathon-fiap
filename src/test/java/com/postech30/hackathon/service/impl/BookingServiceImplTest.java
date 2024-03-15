@@ -457,6 +457,7 @@ class BookingServiceImplTest {
     void testDelete() {
         // Setup
         // Run the test
+        when(mockBookingRepository.existsById(0L)).thenReturn(true);
         bookingServiceImplUnderTest.delete(0L);
 
         // Verify the results

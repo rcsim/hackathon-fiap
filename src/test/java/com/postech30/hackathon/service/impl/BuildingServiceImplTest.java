@@ -47,6 +47,7 @@ class BuildingServiceImplTest {
     void testDeleteBuilding() {
         // Setup
         // Run the test
+        when(mockBuildingRepository.existsById(0L)).thenReturn(true);
         buildingServiceImplUnderTest.deleteBuilding(String.valueOf(0L));
 
         // Verify the results

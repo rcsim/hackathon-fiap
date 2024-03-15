@@ -276,6 +276,7 @@ class AdditionalServiceImplTest {
         additional2.setName("Name");
         additional2.setPrice(10.0d);
         additional2.setType("Type");
+        when(additionalRepository.existsById(1L)).thenReturn(true);
         when(additionalRepository.save(Mockito.any())).thenReturn(additional2);
         when(additionalRepository.getReferenceById(Mockito.<Long>any())).thenReturn(additional);
         AdditionalDTO additionalDTO = new AdditionalDTO();
@@ -302,6 +303,7 @@ class AdditionalServiceImplTest {
         additional.setName("Name");
         additional.setPrice(10.0d);
         additional.setType("Type");
+        when(additionalRepository.existsById(1L)).thenReturn(true);
         when(additionalRepository.save(Mockito.any())).thenThrow(new RuntimeException("foo"));
         when(additionalRepository.getReferenceById(Mockito.<Long>any())).thenReturn(additional);
         assertThrows(RuntimeException.class, () -> additionalServiceImpl.updateServices(1L, new AdditionalDTO()));
@@ -314,6 +316,7 @@ class AdditionalServiceImplTest {
      */
     @Test
     void testDeleteServices() {
+        when(additionalRepository.existsById(1L)).thenReturn(true);
         doNothing().when(additionalRepository).deleteById(Mockito.<Long>any());
         additionalServiceImpl.deleteServices(1L);
         verify(additionalRepository).deleteById(Mockito.<Long>any());
@@ -324,6 +327,7 @@ class AdditionalServiceImplTest {
      */
     @Test
     void testDeleteServices2() {
+        when(additionalRepository.existsById(1L)).thenReturn(true);
         doThrow(new RuntimeException("foo")).when(additionalRepository).deleteById(Mockito.<Long>any());
         assertThrows(RuntimeException.class, () -> additionalServiceImpl.deleteServices(1L));
         verify(additionalRepository).deleteById(Mockito.<Long>any());
