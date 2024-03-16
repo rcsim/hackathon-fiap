@@ -32,6 +32,11 @@ Tecnologias e ferramentas utilizadas
 ## Configurações da solução
 
 ### Diagrama da Arquitetura do Sistema
+Utilizamos uma arquitetura monolítica devido aos seguintes fatores:
+* Por ser tratar de um projeto MVP (Hackathon), acreditamos não ser necessário adicionar a complexidade de um sistema com micro-serviços.
+* Restrição de tempo para realizar o projeto.
+* Experiência dos integrantes do grupo com sistemas monolíticos.
+
 
 ![image](https://github.com/rcsim/hackathon-fiap/assets/30301531/e8dfd650-7745-4a44-8558-4af23b961398)
 
@@ -148,14 +153,13 @@ curl -L -X DELETE 'http://localhost:8080/room/1'
 #### Arquivo POSTMAN
 
 Disponibilizamos um arquivo JSON com todas as requisições Postman para testar a API:
-https://github.com/rcsim/hackathon-fiap/blob/main/src/main/resources/Postman/Hackaton.postman_collection.json
+https://github.com/rcsim/hackathon-fiap/blob/main/collection
 
 
 
 
 ### Testes de Unidade
 Utilizando as bibliotecas JUnit e JMockit, implementamos os testes de unidade, chegando a 95% de cobertura das classes do sistema:
-##TODO mudar imagem
 ![image](https://github.com/rcsim/hackathon-fiap/assets/30301531/0bda1568-236d-4a34-a9fb-47060efd03db)
 
 
