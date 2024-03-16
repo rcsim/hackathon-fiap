@@ -42,7 +42,7 @@ Configuração de produção utilizando o PostgreSQL
 https://github.com/rcsim/hackathon-fiap/blob/a8d5145acff0a02d7405b32d656c3b195e09b520/src/main/resources/application-dev.properties#L1-L13
 
 O schema do banco de dados são criados através do arquivo schema.sql:
-https://github.com/rcsim/hackathon-fiap/blob/main/schema.sql#L1-L34
+https://github.com/rcsim/hackathon-fiap/blob/main/schema.sql#L1-L84
 
 ![image](https://github.com/rcsim/hackathon-fiap/assets/30301531/82faf466-d7a6-45e1-b9e8-19d64e9825e2)
 
