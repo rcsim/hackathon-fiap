@@ -154,9 +154,10 @@ https://github.com/rcsim/hackathon-fiap/blob/main/src/main/resources/Postman/Hac
 
 
 ### Testes de Unidade
-Utilizando as bibliotecas JUnit e JMockit, implementamos os testes de unidade, chegando a 93% de cobertura das classes do sistema:
+Utilizando as bibliotecas JUnit e JMockit, implementamos os testes de unidade, chegando a 95% de cobertura das classes do sistema:
 ##TODO mudar imagem
-![image](https://github.com/rcsim/tech-challenge-fase4/assets/30301531/fcc79848-91b5-4e5a-a17c-2eaacaca7966)
+![image](https://github.com/rcsim/hackathon-fiap/assets/30301531/0bda1568-236d-4a34-a9fb-47060efd03db)
+
 
 
 ### Casos de Testes
