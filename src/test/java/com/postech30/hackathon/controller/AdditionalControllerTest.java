@@ -170,14 +170,17 @@ class AdditionalControllerTest {
         AdditionalController additionalController = new AdditionalController(
                 new AdditionalServiceImpl(additionalRepository));
         AdditionalDTO additionalDTO = new AdditionalDTO();
+        when(additionalRepository.findById(Mockito.<Long>any())).thenReturn(Optional.<Additional>of(additional));
         ResponseEntity<String> actualUpdateServicesResult = additionalController.updateServices(1L, additionalDTO);
-        verify(additionalRepository).getReferenceById(Mockito.<Long>any());
+        verify(additionalRepository).findById(Mockito.<Long>any());
         verify(additionalRepository).save(Mockito.any());
         assertEquals("Os dados do serviço foram atualizados!!", actualUpdateServicesResult.getBody());
         assertEquals("Type", additionalDTO.getType());
         assertEquals(200, actualUpdateServicesResult.getStatusCodeValue());
         assertTrue(actualUpdateServicesResult.getHeaders().isEmpty());
     }
+
+
 
     /**
      * Method under test: {@link AdditionalController#deleteServices(Long)}
