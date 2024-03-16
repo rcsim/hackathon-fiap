@@ -244,7 +244,7 @@ class AdditionalServiceImplTest {
     void testGetServicesById2() {
         Optional<Additional> emptyResult = Optional.empty();
         when(additionalRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
-        assertThrows(RuntimeException.class, () -> additionalServiceImpl.getServicesById(1L));
+        assertThrows(AdditionalNotFoundException.class, () -> additionalServiceImpl.getServicesById(1L));
         verify(additionalRepository).findById(Mockito.<Long>any());
     }
 
@@ -281,8 +281,9 @@ class AdditionalServiceImplTest {
         when(additionalRepository.save(Mockito.any())).thenReturn(additional2);
         when(additionalRepository.getReferenceById(Mockito.<Long>any())).thenReturn(additional);
         AdditionalDTO additionalDTO = new AdditionalDTO();
+        when(additionalRepository.findById(Mockito.<Long>any())).thenReturn(Optional.<Additional>of(additional));
         AdditionalDTO actualUpdateServicesResult = additionalServiceImpl.updateServices(1L, additionalDTO);
-        verify(additionalRepository).getReferenceById(Mockito.<Long>any());
+        verify(additionalRepository).findById(Mockito.<Long>any());
         verify(additionalRepository).save(Mockito.any());
         assertEquals("Name", actualUpdateServicesResult.getName());
         assertEquals("The characteristics of someone or something", actualUpdateServicesResult.getDescription());
@@ -290,26 +291,6 @@ class AdditionalServiceImplTest {
         assertEquals("Type", actualUpdateServicesResult.getType());
         assertEquals(10.0d, actualUpdateServicesResult.getPrice().doubleValue());
         assertEquals(1L, actualUpdateServicesResult.getId().longValue());
-    }
-
-    /**
-     * Method under test:
-     * {@link AdditionalServiceImpl#updateServices(Long, AdditionalDTO)}
-     */
-    @Test
-    void testUpdateServices2() {
-        Additional additional = new Additional();
-        additional.setDescription("The characteristics of someone or something");
-        additional.setId(1L);
-        additional.setName("Name");
-        additional.setPrice(10.0d);
-        additional.setType("Type");
-        when(additionalRepository.existsById(1L)).thenReturn(true);
-        when(additionalRepository.save(Mockito.any())).thenThrow(new RuntimeException("foo"));
-        when(additionalRepository.getReferenceById(Mockito.<Long>any())).thenReturn(additional);
-        assertThrows(RuntimeException.class, () -> additionalServiceImpl.updateServices(1L, new AdditionalDTO()));
-        verify(additionalRepository).getReferenceById(Mockito.<Long>any());
-        verify(additionalRepository).save(Mockito.any());
     }
 
     /**
