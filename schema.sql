@@ -1,34 +1,84 @@
+CREATE TABLE tb_additional (
+                               id BIGINT NOT NULL,
+                               name VARCHAR(255),
+                               description TEXT,
+                               price DOUBLE PRECISION,
+                               type VARCHAR(255),
+                               PRIMARY KEY (id)
+);
 CREATE TABLE tb_clients (
-    id SERIAL PRIMARY KEY,
-    country VARCHAR(255),
-    cpf VARCHAR(14),
-    passport VARCHAR(255),
-    full_name VARCHAR(255) NOT NULL,
-    birth_date DATE,
-    address VARCHAR(255),
-    phone VARCHAR(20),
-    email VARCHAR(255) NOT NULL
+                            id BIGINT NOT NULL,
+                            country VARCHAR(255),
+                            cpf VARCHAR(255),
+                            passport VARCHAR(255),
+                            fullName VARCHAR(255),
+                            birthDate DATE,
+                            address VARCHAR(255),
+                            phone VARCHAR(255),
+                            email VARCHAR(255),
+                            PRIMARY KEY (id)
+);
+CREATE TABLE tb_location (
+                             id BIGINT NOT NULL,
+                             name VARCHAR(255),
+                             address VARCHAR(255),
+                             zipCode VARCHAR(255),
+                             city VARCHAR(255),
+                             state VARCHAR(255),
+                             PRIMARY KEY (id)
 );
 
-CREATE TABLE tb_services (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    price NUMERIC(10, 2),
-    type VARCHAR(255)
+
+CREATE TABLE tb_building (
+                             id BIGINT NOT NULL,
+                             location_id BIGINT,
+                             name VARCHAR(255),
+                             PRIMARY KEY (id),
+                             FOREIGN KEY (location_id) REFERENCES tb_location(id)
+);
+
+
+
+
+
+CREATE TABLE tb_room (
+                         id BIGINT NOT NULL,
+                         building_id BIGINT,
+                         location_id BIGINT,
+                         type VARCHAR(255),
+                         totalPeople INT,
+                         totalBeds INT,
+                         otherFurniture VARCHAR(255),
+                         bathroom VARCHAR(255),
+                         dailyRate DOUBLE PRECISION,
+                         PRIMARY KEY (id),
+                         FOREIGN KEY (building_id) REFERENCES tb_building(id),
+                         FOREIGN KEY (location_id) REFERENCES tb_location(id)
 );
 
 CREATE TABLE tb_bookings (
-    id SERIAL PRIMARY KEY,
-    id_client INTEGER REFERENCES tb_clients(id),
-    check_in_date DATE,
-    check_out_date DATE,
-    total_value NUMERIC(10, 2),
-    guests INTEGER
+                             id BIGINT NOT NULL,
+                             id_client BIGINT,
+                             checkInDate DATE,
+                             checkOutDate DATE,
+                             totalValue DOUBLE PRECISION,
+                             guests INT,
+                             PRIMARY KEY (id),
+                             FOREIGN KEY (id_client) REFERENCES tb_clients(id)
+);
+
+CREATE TABLE rooms_booked (
+                              book_id BIGINT NOT NULL,
+                              room_id BIGINT NOT NULL,
+                              PRIMARY KEY (book_id, room_id),
+                              FOREIGN KEY (book_id) REFERENCES tb_bookings(id),
+                              FOREIGN KEY (room_id) REFERENCES tb_room(id)
 );
 
 CREATE TABLE services_booked (
-    book_id INTEGER REFERENCES tb_bookings(id),
-    service_id INTEGER REFERENCES tb_services(id),
-    PRIMARY KEY (book_id, service_id)
+                                 book_id BIGINT NOT NULL,
+                                 service_id BIGINT NOT NULL,
+                                 PRIMARY KEY (book_id, service_id),
+                                 FOREIGN KEY (book_id) REFERENCES tb_bookings(id),
+                                 FOREIGN KEY (service_id) REFERENCES tb_additional(id)
 );
